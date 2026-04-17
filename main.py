@@ -24,7 +24,7 @@ def playing_area():
     pass
 
 # Function 1: Movement using turtle heading (forward + setheading)
-def move_with_heading(t):
+def move_with_heading(t, turtles):
     # Move the turtle continuously using forward movement and its current heading.
     # The turtle should update its position each frame using forward().
     # When the turtle hits a boundary:
@@ -37,8 +37,12 @@ def move_with_heading(t):
     if t.xcor() > 285 or t.xcor() < -290:
         t.setheading(180 - t.heading())
         t.forward(10)
+        turtles.append(create_turtle())
     if t.ycor() > 290 or t.ycor() < -290:
         t.setheading(t.heading()*-1)
+        turtles.append(create_turtle())
+    
+    return turtles
 
 
 # Function 2: Movement using delta x / delta y (coordinate-based movement)
@@ -65,6 +69,21 @@ def move_with_deltas(t, deltax, deltay):
     turtle.goto(newx, newy)
     return deltax, deltay
 
+def create_turtle():
+    turtle = Turtle()
+    turtle.color(generate_color())
+    turtle.pensize(3)
+    turtle.speed(0)
+    turtle.shape("circle")
+    turtle.setheading(random.randint(0, 360))
+    return(turtle)
+
+turtle = Turtle()
+turtle.color(generate_color())
+turtle.pensize(3)
+turtle.speed(0)
+turtle.shape("circle")
+turtle.setheading(random.randint(0, 360))
 
 screen = Screen()
 screen.bgcolor("black")
@@ -72,18 +91,11 @@ screen.setup(600,600)
 
 playing_area()
 
-turtle = Turtle()
-turtle.color(generate_color())
-turtle.pensize(3)
-turtle.speed(0)
-turtle.shape("circle")
+
 deltax = random.randint(-3,3)
 deltay = random.randint(-3,3)
 
-
-
-
-# turtles=[]
+turtles=[turtle]
 # for i in range(10):
 #     turtle = Turtle()
 #     turtle.color(generate_color())
@@ -95,6 +107,9 @@ deltay = random.randint(-3,3)
 
 alive = True
 while alive:
-    deltax, deltay = move_with_deltas(turtle, deltax, deltay)
+    for obj in turtles:
+        #deltax, deltay = move_with_deltas(turtle, deltax, deltay)
+        move_with_heading(obj, turtles)
+
 
 screen.exitonclick()
