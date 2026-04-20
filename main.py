@@ -78,6 +78,61 @@ def create_turtle():
     turtle.setheading(random.randint(0, 360))
     return(turtle)
 
+def create_player():
+    global player
+    player = Turtle()
+    player.speed(0)
+    player.color("white")
+    player.shape("turtle")
+
+def up():
+    global player
+    player.setheading(90)
+    player.forward(10)
+
+def down():
+    global player
+    player.setheading(-90)
+    player.forward(10)
+
+def right():
+    global player
+    player.right(10)
+    player.forward(10)
+
+def left():
+    global player
+    player.left(10)
+    player.forward(10)
+
+# def update():
+#     global turtles
+#     if player !=  None:
+#         turtles = move_with_heading(player, turtles)
+#     for obj in turtles:
+        
+#         #deltax, deltay = move_with_deltas(turtle, deltax, deltay)
+#         # move_with_heading(obj, turtles)
+
+#         if player != None and player.distance(obj) < 20:
+#             obj.hideturtle()
+#             turtles.remove(obj)
+#     screen.ontimer(update, 30)
+
+    
+
+screen = Screen()
+screen.bgcolor("black")
+screen.setup(600,600)
+screen.listen()
+screen.onkey(create_player, "space")
+# screen.onkeypress(up, "w")
+# screen.onkeypress(down, "s")
+screen.onkeypress(right, "d")
+screen.onkeypress(left, "a")
+
+playing_area()
+
 turtle = Turtle()
 turtle.color(generate_color())
 turtle.pensize(3)
@@ -85,12 +140,8 @@ turtle.speed(0)
 turtle.shape("circle")
 turtle.setheading(random.randint(0, 360))
 
-screen = Screen()
-screen.bgcolor("black")
-screen.setup(600,600)
 
-playing_area()
-
+player = None
 
 deltax = random.randint(-3,3)
 deltay = random.randint(-3,3)
@@ -107,9 +158,16 @@ turtles=[turtle]
 
 alive = True
 while alive:
+    if player !=  None:
+        turtles = move_with_heading(player, turtles)
     for obj in turtles:
+        
         #deltax, deltay = move_with_deltas(turtle, deltax, deltay)
-        move_with_heading(obj, turtles)
+        turtles = move_with_heading(obj, turtles)
+
+        if player != None and player.distance(obj) < 20:
+            obj.hideturtle()
+            turtles.remove(obj)
 
 
 screen.exitonclick()
